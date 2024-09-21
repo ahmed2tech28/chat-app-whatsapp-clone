@@ -1,59 +1,38 @@
+"use client";
+import { useUsers } from "@/providers/UsersProvider";
 import { Avatar } from "@mui/material";
 import React from "react";
+import Link from "next/link";
 
-const users = [
-  {
-    name: "John Doe",
-    email: "johndoe@example.com",
-    avatar: "/path-to-avatar1.jpg",
-  },
-  {
-    name: "Jane Smith",
-    email: "janesmith@example.com",
-    avatar: "/path-to-avatar2.jpg",
-  },
-  {
-    name: "Michael Brown",
-    email: "michaelbrown@example.com",
-    avatar: "/path-to-avatar3.jpg",
-  },
-  {
-    name: "Alice Johnson",
-    email: "alicejohnson@example.com",
-    avatar: "/path-to-avatar4.jpg",
-  },
-  {
-    name: "Chris Evans",
-    email: "chrisevans@example.com",
-    avatar: "/path-to-avatar5.jpg",
-  },
-];
-
-const ChatInfo: React.FC<{ name: string; email: string; avatar: string }> = ({
+const ChatInfo: React.FC<{ name: string; email: string; _id: any }> = ({
   name,
   email,
-  avatar,
+  _id,
 }) => {
   return (
-    <div className="flex items-center space-x-4 cursor-pointer">
-      <Avatar alt={name} src={avatar} />
+    <Link
+      href={`?id=${_id}`}
+      className="flex items-center space-x-4 cursor-pointer"
+    >
+      <Avatar alt={name} />
       <div>
         <h3 className="text-lg font-semibold">{name}</h3>
         <p className="text-sm text-gray-500">{email}</p>
       </div>
-    </div>
+    </Link>
   );
 };
 
 function SideBar() {
+  const [users, setUsers] = useUsers();
   return (
     <div className="w-1/4 h-screen bg-gray-100 p-4 flex flex-col gap-y-4">
-      {users.map((user, index) => (
+      {users.map((user: any, index: any) => (
         <ChatInfo
           key={index}
           name={user.name}
           email={user.email}
-          avatar={user.avatar}
+          _id={user._id}
         />
       ))}
     </div>

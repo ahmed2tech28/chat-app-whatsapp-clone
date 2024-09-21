@@ -13,8 +13,11 @@ app.prepare().then(() => {
 
   const io = new Server(httpServer);
 
+  const socketMap = new Map();
+
   io.on("connection", (socket) => {
-    console.log(socket.id, "New soccket connected");
+    const email = socket.handshake.query.email;
+    socketMap.set(email, socket.id);
   });
 
   httpServer

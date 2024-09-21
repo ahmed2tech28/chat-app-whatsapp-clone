@@ -1,21 +1,20 @@
-import React from "react";
+import ChatArea from "@/components/custom/ChatArea";
 import SideBar from "@/components/custom/SideBar";
-import ProfileMenu from "@/components/custom/ProfileMenu";
-import ChatContainer from "@/components/custom/ChatContainer";
-import SendMessageContainer from "@/components/custom/SendMessageContainer";
+import { UsersProvider } from "@/providers/UsersProvider";
+import { SocketProvider } from "@/socket/socket";
 
 function Home() {
   return (
-    <main className="flex h-screen w-screen">
-      <div className="w-[20%] h-full bg-gray-100 px-2">
-        <SideBar />
-      </div>
-      <div className="w-[80%] h-full">
-        <ProfileMenu />
-        <ChatContainer />
-        <SendMessageContainer />
-      </div>
-    </main>
+    <SocketProvider>
+      <UsersProvider>
+        <main className="flex h-screen w-screen">
+          <div className="w-[20%] h-full bg-gray-100 px-2">
+            <SideBar />
+          </div>
+          <ChatArea />
+        </main>
+      </UsersProvider>
+    </SocketProvider>
   );
 }
 export default Home;

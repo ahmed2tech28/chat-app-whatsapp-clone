@@ -10,7 +10,6 @@ const Redirect = () => {
   const pathname = usePathname();
 
   useEffect(() => {
-    console.log(session);
     if (!session) {
       router.push("/login");
     }
