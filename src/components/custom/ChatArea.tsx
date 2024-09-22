@@ -36,7 +36,7 @@ const ChatArea = () => {
 
   if (searchParams.get("id")) {
     return (
-      <div className="w-[80%] h-full">
+      <div className="w-[70%] h-full">
         <ProfileMenu id={searchParams.get("id")} user={user} />
         <ChatContainer chats={chats} setChats={setChats} />
         <SendMessageContainer

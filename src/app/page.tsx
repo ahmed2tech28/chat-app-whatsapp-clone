@@ -9,7 +9,7 @@ function Home() {
     <SocketProvider>
       <UsersProvider>
         <main className="flex h-screen w-screen">
-          <div className="w-[20%] h-full bg-gray-100 px-2">
+          <div className="lg:w-[30%] w-[5rem] h-full bg-gray-100 px-2">
             <SideBar />
           </div>
           <ChatsProvider>
