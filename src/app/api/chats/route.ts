@@ -20,7 +20,9 @@ export async function GET(request: NextRequest) {
         { from, to },
         { from: to, to: from },
       ],
-    }).sort({ createdAt: 1 });
+    })
+      .sort({ createdAt: 1 })
+      .select("from to message");
 
     return NextResponse.json(messages);
   } catch (error) {

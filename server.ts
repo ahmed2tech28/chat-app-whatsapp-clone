@@ -21,7 +21,7 @@ app.prepare().then(() => {
     socketMap.set(email, socket.id);
     socket.on("send:message", async (data) => {
       const socketId = socketMap.get(data?.to);
-      console.log(socketId, socketMap);
+      // console.log(socketId, socketMap);
       io.to(socketId).emit("recieve:message", data);
       const newMessage = new MessageModel(data);
       await newMessage.save();

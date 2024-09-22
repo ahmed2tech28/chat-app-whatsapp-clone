@@ -16,7 +16,7 @@ interface ChatInfoProps {
 const ChatInfo: React.FC<ChatInfoProps> = ({ name, email, _id }) => {
   return (
     <Link
-      href={`?id=${_id}`}
+      href={`?id=${_id}&email=${email}`}
       className="flex items-center space-x-4 cursor-pointer"
     >
       <Avatar alt={name} />
