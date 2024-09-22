@@ -2,9 +2,9 @@
   "name": "chat-app",
   "version": "0.1.0",
   "private": true,
-  "type": "module",
   "scripts": {
-    "dev": "nodemon server.js",
+    "dev": "nodemon",
+    "final": "ts-node --files server.ts",
     "build": "next build",
     "start": "NODE_ENV=production node server.js",
     "lint": "next lint"
@@ -25,12 +25,14 @@
     "mongoose": "^8.6.2",
     "next": "14.2.11",
     "next-auth": "^4.24.7",
+    "nodemon": "^3.1.7",
     "react": "^18",
     "react-dom": "^18",
     "socket.io": "^4.7.5",
     "socket.io-client": "^4.7.5",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "ts-node": "^10.9.2"
   },
   "devDependencies": {
     "@types/node": "^20",

@@ -1,19 +1,19 @@
 import mongoose, { Model } from "mongoose";
 
 interface IMessage {
-  sender: mongoose.Schema.Types.ObjectId;
-  reciever: mongoose.Schema.Types.ObjectId | null;
+  from: string;
+  to: string | null;
   message: string;
 }
 
 const schema = new mongoose.Schema<IMessage>(
   {
-    sender: {
-      type: mongoose.Schema.Types.ObjectId,
+    from: {
+      type: String,
       required: true,
     },
-    reciever: {
-      type: mongoose.Schema.Types.ObjectId,
+    to: {
+      type: String,
       default: null,
     },
     message: {

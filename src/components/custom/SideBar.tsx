@@ -1,7 +1,7 @@
 "use client";
 import { useUsers } from "@/providers/UsersProvider";
 import { Avatar } from "@mui/material";
-import React, { useState } from "react";
+import React, { use, useState } from "react";
 import Link from "next/link";
 import MenuIcon from "@mui/icons-material/Menu"; // Import a three-dot icon
 import { Dialog } from "@mui/material"; // For showing sidebar in a backdrop on mobile

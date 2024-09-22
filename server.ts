@@ -1,6 +1,7 @@
 import { createServer } from "node:http";
 import next from "next";
 import { Server } from "socket.io";
+import MessageModel from "./src/db/models/Message";
 
 const dev = process.env.NODE_ENV !== "production";
 const hostname = "localhost";
@@ -18,9 +19,12 @@ app.prepare().then(() => {
   io.on("connection", (socket) => {
     const email = socket.handshake.query.email;
     socketMap.set(email, socket.id);
-    socket.on("send:message", (data) => {
+    socket.on("send:message", async (data) => {
       const socketId = socketMap.get(data?.to);
+      console.log(socketId, socketMap);
       io.to(socketId).emit("recieve:message", data);
+      const newMessage = new MessageModel(data);
+      await newMessage.save();
     });
   });
 
