@@ -1,4 +1,4 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js]Chat App project created my ahmed2tech28
 
 ## Getting Started
 
@@ -14,23 +14,22 @@ pnpm dev
 bun dev
 ```
 
+## Development Server
+
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Material
+
+The Project Uses [`Next js`](https://nextjs.org/) as a full stack framework
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
+This project uses [`socket.io`](https://socket.io/how-to/use-with-nextjs) to impliment a centeral realtime server
 
-To learn more about Next.js, take a look at the following resources:
+This project uses [`Next Auth`](http://next-auth.js.org/) to impliment full authentication system. Incuding password auth and authentication using google
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+This project uses [`mongodb`](https://mongodb.com) as the dataabse
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+In this project I used [`tailwind css`](https://tailwindcss.com/) to shocase my styling skills using this most popular css framework
 
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The project uses [`Shadcn ui`](https://ui.shadcn.com/) as the ui library. Becasue i want to be focused on the logic bhuilding
