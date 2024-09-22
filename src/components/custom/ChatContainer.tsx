@@ -1,34 +1,49 @@
-import React from "react";
+"use client";
+import React, { useEffect } from "react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { useSession } from "next-auth/react";
+import { useSocket } from "@/socket/socket";
 
-function ChatContainer() {
+function ChatContainer({ chats, setChats }: { chats: any; setChats: any }) {
+  const { data: session } = useSession();
+  const socket = useSocket();
+
+  useEffect(() => {
+    socket?.on("recieve:message", (data) => {
+      console.log("message recieed with data");
+      setChats([...chats, data]);
+    });
+
+    return () => {};
+  }, [chats]);
+
   return (
     <div className="w-full h-[83%] px-2 flex flex-col-reverse overflow-y-auto overflow-x-hidden">
-      <div className="flex w-full justify-end">
-        <Alert className="w-fit my-2">
-          <AlertTitle>Shubam</AlertTitle>
-          <AlertDescription className="max-w-[80ch]">
-            Lorem ipsum dolor sit amet consectetur, adipisicing elit. Inventore,
-            ea at commodi officiis fuga beatae doloremque, delectus quae quaerat
-            corrupti minus assumenda saepe ullam autem explicabo et neque, esse
-            deserunt.
-          </AlertDescription>
-        </Alert>
-      </div>
-      <div className="flex w-full justify-end">
-        <Alert className="w-fit my-2">
-          <AlertTitle>Shubam</AlertTitle>
-          <AlertDescription className="max-w-[80ch]">
-            How are you
-          </AlertDescription>
-        </Alert>
-      </div>
-      <div className="flex w-full justify-start">
-        <Alert className="w-fit my-2">
-          <AlertTitle>Shubam</AlertTitle>
-          <AlertDescription className="max-w-[80ch]">Hi</AlertDescription>
-        </Alert>
-      </div>
+      {[...chats].reverse()?.map((item: any, i: any) => {
+        if (item.from == session?.user?.email) {
+          return (
+            <div className="flex w-full justify-end">
+              <Alert className="w-fit my-2">
+                <AlertTitle>you</AlertTitle>
+                <AlertDescription className="max-w-[80ch]">
+                  {item.message}
+                </AlertDescription>
+              </Alert>
+            </div>
+          );
+        } else {
+          return (
+            <div className="flex w-full justify-start">
+              <Alert className="w-fit my-2">
+                <AlertTitle>{item.from}</AlertTitle>
+                <AlertDescription className="max-w-[80ch]">
+                  {item.message}
+                </AlertDescription>
+              </Alert>
+            </div>
+          );
+        }
+      })}
     </div>
   );
 }

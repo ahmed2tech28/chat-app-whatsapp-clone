@@ -5,7 +5,6 @@ import { Avatar } from "@mui/material";
 import { Button } from "../ui/button";
 import CallIcon from "@mui/icons-material/Call";
 import VideoCallIcon from "@mui/icons-material/VideoCall";
-import axios from "axios";
 
 interface User {
   _id: any;
@@ -13,21 +12,7 @@ interface User {
   email: string;
 }
 
-function ProfileMenu({ id }: { id: string | null }) {
-  const [user, setUser] = useState<User | null>(null);
-
-  useEffect(() => {
-    axios
-      .get(`/api/users/user?id=${id}`)
-      .then((res) => {
-        console.log(res.data);
-        setUser(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, [id]);
-
+function ProfileMenu({ id, user }: { id: string | null; user: User | null }) {
   return (
     <div className="flex items-center justify-between w-full p-4 shadow-md h-[10%]">
       <div className="flex items-center space-x-4">

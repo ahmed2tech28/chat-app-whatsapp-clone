@@ -18,6 +18,10 @@ app.prepare().then(() => {
   io.on("connection", (socket) => {
     const email = socket.handshake.query.email;
     socketMap.set(email, socket.id);
+    socket.on("send:message", (data) => {
+      const socketId = socketMap.get(data?.to);
+      io.to(socketId).emit("recieve:message", data);
+    });
   });
 
   httpServer

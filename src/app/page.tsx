@@ -2,6 +2,7 @@ import ChatArea from "@/components/custom/ChatArea";
 import SideBar from "@/components/custom/SideBar";
 import { UsersProvider } from "@/providers/UsersProvider";
 import { SocketProvider } from "@/socket/socket";
+import { ChatsProvider } from "@/providers/ChatsProvider";
 
 function Home() {
   return (
@@ -11,7 +12,9 @@ function Home() {
           <div className="w-[20%] h-full bg-gray-100 px-2">
             <SideBar />
           </div>
-          <ChatArea />
+          <ChatsProvider>
+            <ChatArea />
+          </ChatsProvider>
         </main>
       </UsersProvider>
     </SocketProvider>
