@@ -26,6 +26,10 @@ app.prepare().then(() => {
       const newMessage = new MessageModel(data);
       await newMessage.save();
     });
+
+    socket.on("disconnect", () => {
+      socketMap.delete(email);
+    });
   });
 
   httpServer

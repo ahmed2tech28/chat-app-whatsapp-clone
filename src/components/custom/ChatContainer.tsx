@@ -25,9 +25,13 @@ function ChatContainer({ chats, setChats }: { chats: any; setChats: any }) {
             <div className="flex w-full justify-end">
               <Alert className="w-fit my-2">
                 <AlertTitle>you</AlertTitle>
-                <AlertDescription className="max-w-[80ch]">
-                  {item.message}
-                </AlertDescription>
+                {item.message.includes("base64") ? (
+                  <img src={item.message} alt="" className="max-w-80" />
+                ) : (
+                  <AlertDescription className="max-w-[80ch]">
+                    {item.message}
+                  </AlertDescription>
+                )}
               </Alert>
             </div>
           );
@@ -36,9 +40,13 @@ function ChatContainer({ chats, setChats }: { chats: any; setChats: any }) {
             <div className="flex w-full justify-start">
               <Alert className="w-fit my-2">
                 <AlertTitle>{item.from}</AlertTitle>
-                <AlertDescription className="max-w-[80ch]">
-                  {item.message}
-                </AlertDescription>
+                {item.message.includes("base64") ? (
+                  <img src={item.message} alt="" className="max-w-80" />
+                ) : (
+                  <AlertDescription className="max-w-[80ch]">
+                    {item.message}
+                  </AlertDescription>
+                )}
               </Alert>
             </div>
           );
