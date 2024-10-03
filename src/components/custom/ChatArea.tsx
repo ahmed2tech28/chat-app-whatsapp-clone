@@ -5,7 +5,6 @@ import ProfileMenu from "./ProfileMenu";
 import ChatContainer from "./ChatContainer";
 import SendMessageContainer from "./SendMessageContainer";
 import { useSearchParams } from "next/navigation";
-import { useSocket } from "@/socket/socket";
 import axios from "axios";
 import { useChats } from "@/providers/ChatsProvider";
 
@@ -16,7 +15,6 @@ interface User {
 }
 
 const ChatArea = () => {
-  const socket = useSocket();
   const searchParams = useSearchParams();
   const [chats, setChats] = useChats();
 

@@ -27,6 +27,23 @@ app.prepare().then(() => {
       await newMessage.save();
     });
 
+    socket.on("call:initiate", (data) => {
+      const { from, to, offer } = data;
+      const calleeSocketId = socketMap.get(to);
+      if (calleeSocketId) {
+        io.to(calleeSocketId).emit("call:offer", { from, offer });
+      }
+    });
+
+    // Callee sends the answer
+    socket.on("call:answer", (data) => {
+      const { from, to, answer } = data;
+      const callerSocketId = socketMap.get(from);
+      if (callerSocketId) {
+        io.to(callerSocketId).emit("call:answer", { answer });
+      }
+    });
+
     socket.on("disconnect", () => {
       socketMap.delete(email);
     });

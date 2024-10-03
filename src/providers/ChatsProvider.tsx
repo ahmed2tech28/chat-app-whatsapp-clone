@@ -1,7 +1,7 @@
 "use client";
 import axios from "axios";
 import { useSession } from "next-auth/react";
-import { useSearchParams } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import React, { createContext, useContext, useEffect, useState } from "react";
 
 const ChatContext: any = createContext([null]);
@@ -12,13 +12,14 @@ export const ChatsProvider: React.FC<{ children: React.ReactNode }> = ({
   const { data: session } = useSession();
   const [chats, setChats] = useState([]);
   const searchParams = useSearchParams();
+
   useEffect(() => {
     if (session)
       axios
         .get(
-          `http://localhost:3000/api/chats?from=${
-            session?.user?.email
-          }&to=${searchParams.get("email")}`
+          `/api/chats?from=${session?.user?.email}&to=${searchParams.get(
+            "email"
+          )}`
         )
         .then((res) => {
           setChats(res.data);
@@ -26,7 +27,7 @@ export const ChatsProvider: React.FC<{ children: React.ReactNode }> = ({
         .catch((err) => {
           err;
         });
-  }, [session]);
+  }, [session, searchParams.get("email")]);
 
   return (
     <ChatContext.Provider value={[chats, setChats]}>
