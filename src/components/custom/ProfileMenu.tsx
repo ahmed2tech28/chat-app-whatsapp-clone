@@ -6,6 +6,7 @@ import VideoCallIcon from "@mui/icons-material/VideoCall";
 import VideoCallPoup from "./VideoCallPoup";
 import { useSocket } from "@/socket/socket"; // Import the custom hook
 import { useSession } from "next-auth/react";
+import Peer from "simple-peer";
 
 interface User {
   _id: any;
@@ -20,14 +21,11 @@ function ProfileMenu({ id, user }: { id: string | null; user: User | null }) {
   const { data: session } = useSession();
 
   const socket = useSocket();
-  let peerConnection: RTCPeerConnection | null = null;
+  let peer: any = null;
 
   // Handle video call initiation (caller side)
   const handleVideoCall = useCallback(async () => {
     setVideoCallStarted(true);
-
-    // Create a new peer connection
-    peerConnection = new RTCPeerConnection();
 
     // Get local media stream
     const localStream = await navigator.mediaDevices.getUserMedia({
@@ -35,67 +33,70 @@ function ProfileMenu({ id, user }: { id: string | null; user: User | null }) {
       audio: true,
     });
 
-    // Add local tracks to the peer connection
-    localStream.getTracks().forEach((track) => {
-      peerConnection?.addTrack(track, localStream);
+    peer = new Peer({
+      initiator: true,
+      trickle: false,
+      stream: localStream,
     });
 
-    // Create an SDP offer and send to the other user
-    const offer = await peerConnection.createOffer();
-    await peerConnection.setLocalDescription(offer);
-
-    socket?.emit("call:initiate", {
-      from: session?.user?.email,
-      to: user?.email, // Specify the receiver's email
-      offer,
+    peer.on("signal", (offer: any) => {
+      socket?.emit("call:initiate", {
+        from: session?.user?.email,
+        to: user?.email, // Specify the receiver's email
+        offer,
+      });
     });
-  }, [socket, user?.email]);
+
+    peer.on("stream", (stream: any) => {
+      setRemoteStream(stream); // Set remote video stream
+    });
+
+    socket?.on("call:answer", (data) => {
+      peer.signal(data.answer);
+    });
+  }, [socket, user?.email, session]);
 
   // Listen for incoming call offers
   useEffect(() => {
     socket?.on("call:offer", async (data) => {
       const { from, offer } = data;
       setIncomingCall(true);
+      console.log("Incoming call from:", from);
 
-      console.log("Call is comming");
-
-      peerConnection = new RTCPeerConnection();
-
+      // Get local media stream
       const localStream = await navigator.mediaDevices.getUserMedia({
         video: true,
         audio: true,
       });
 
-      localStream.getTracks().forEach((track) => {
-        peerConnection?.addTrack(track, localStream);
+      peer = new Peer({
+        initiator: false,
+        trickle: false,
+        stream: localStream,
       });
 
-      await peerConnection.setRemoteDescription(
-        new RTCSessionDescription(offer)
-      );
+      peer.signal(offer);
 
-      const answer = await peerConnection.createAnswer();
-      await peerConnection.setLocalDescription(answer);
+      peer.on("stream", (stream: any) => {
+        setRemoteStream(stream); // Set remote video stream
+      });
 
-      socket.emit("call:answer", {
+      socket?.emit("call:answer", {
         from: user?.email,
         to: from,
-        answer,
+        answer: peer.signal(),
       });
-
-      peerConnection.ontrack = (event) => {
-        setRemoteStream(event.streams[0]);
-      };
     });
 
     return () => {
       socket?.off("call:offer");
+      socket?.off("call:answer");
     };
   }, [socket, user?.email]);
 
   const acceptCall = () => {
     setIncomingCall(false);
-    setVideoCallStarted(true);
+    setVideoCallStarted(true); // Start the video call
   };
 
   const rejectCall = () => {

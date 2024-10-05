@@ -40,7 +40,7 @@ app.prepare().then(() => {
       const { from, to, answer } = data;
       const callerSocketId = socketMap.get(from);
       if (callerSocketId) {
-        io.to(callerSocketId).emit("call:answer", { answer });
+        io.to(callerSocketId).emit("call:accepted", { answer });
       }
     });
 
